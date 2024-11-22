@@ -1,0 +1,74 @@
+https://www.researchgate.net/publication/221982307_Using_Patterns_to_Encode_Color_Information_for_Dichromats
+
+Apparently, there have been people that had similar ideas to what we are doing. 
+This paper makes use of patterns in 3d graphics.
+
+https://imgur.com/fivHiLB
+
+Key terms:
+
+deuteranopia - Missing M cone (green)
+deuteranomaly - Weakened/shifted M cone
+
+protonopia - Missing L cone (red)
+protoanomaly - Weakened/shifted L cone
+
+tritanopia - missing s cone or not
+tritananomaly - Weakened/shifted s cone
+
+A "normal" person is tricromatic (three chromas). People with a weakened cone are dicromatic (two chromas). Those who
+are dicromatic are commonly referred to as CVD (color vision deficient)
+
+The paper notes on page 3, "The range of perceivable colors by a dichromat forms a 2D plane instead of a 3D volume in the RGB space"
+
+### Run cspace.py ###
+
+- a tricromatic person should be able to see all colors in the the cubic color_space
+- a dichromat person would see a 2d plane
+
+I beleive that modern solutions for CVD problems rely on grouping people based on one of the three "nopias".
+A more nuanced approach to what colors can and can't be seen would benefit those with one of the anomalies.
+A dicromatic persons color space may not just be able to see along the plane, but may take the shape of an ellipsoid. 
+
+
+
+Open kmeansclustering.py
+
+In this file we can see the different default solutions to the 3 types of colorblindness.
+There are 3 default palettes for the 3 types of colorblindness. Each contains 15 colors that SHOULD be able to be seen by CVD.
+
+While these palettes may suffice, I want to select 15 colors that will best show contrast.
+
+#ToDo, Currently the pixels are assigned a label and each label takes a color from the palette.
+I want the color selected to be based on the distance in colorspace.
+For example: kmeans N = 5, high contrast
+
+open centroid_example.py
+I want to be able to create a color palette not based on an individuals determined type, but based on feedback from a psuedo anomaloscope.
+
+
+
+# https://colorspace.r-forge.r-project.org/articles/colorspace.html
+# This is pretty important. This is a color scheme that has been used in the past to help CVD individuals better see. There are 
+packages in R that are useable, but I still want to a user to be able to custom calibrate their colors. 
+
+
+
+
+
+# Did a little bit of research to see how people are even tested. It seems to me that the most standard way to test people
+is the Ishihara test. Feels super antiquated (1917). This is used for RED GREEN deficiency
+
+# I need to figure out what these all exactly entail, but these are other methods used to determine different types of color-blindness
+
+anomaloscope- Apparently used for precisely determining the type and severity of red-green. This one seems the most promising, but it's super expensive.
+It's essentially two colors that appear and you have to determine if they are the same color or not. Screens can't do this because we need "pure" colors.
+The 'yellow' we see on the screen is not reallly yellow, but a mixture of red and green. 
+
+farmsworth-munsell 100 hue test: Assesses the abilityh to perceive suble color differences. more useful for identifying blue-yellow deficientcies.
+The Farnsworth-Munsell 100 hue test is one of the most famous color vision tests available. It belongs to the group of hue discrimination, 
+also called arrangement tests. Another famous test in this group is the Farnsworth D15 arrangement test.
+
+Cambridge color test- computer-based test used for blue-yellow
+
+HRR plates- similar to Ishihara, but can be used for both red-green and blue-yellow
