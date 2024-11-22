@@ -2,11 +2,13 @@ import cv2
 import numpy as np
 import aaa_scaling_CDV as scale
 import sys
+from skspatial.objects import Plane, Vector
+import matplotlib.pyplot as plt
 
 # np.set_printoptions(threshold='truncated')
 
 # Load the image in BGR format
-filepath = 'backend/outside.jpg'
+filepath = 'wip/outside.jpg'
 new_file_path = scale.simulate_cvd(filepath, 'protanopia', 50)
 src = cv2.imread(new_file_path)
 
@@ -25,13 +27,9 @@ b = b - 128
 lab_image = cv2.merge([L, a, b])
 # print(lab_image)
 
+#Our image is now in l*a*b format
 
+#TODO: Define a plane that touches the X and Z axes then is rotated -11.48 degress about the z axis.
 
-
-
-
-
-
-
-# print(f"Shape of the cur: {nopia_plane.shape}")
-
+# This plane is flush with the X and Z axes.
+plane = Plane((1,0,1), (0,1,0))

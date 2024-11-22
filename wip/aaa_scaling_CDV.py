@@ -38,7 +38,7 @@ def simulate_cvd(image_path, cvd_type, severity):
     # Load the image
     img = Image.open(image_path).convert("RGB")
     img_array = np.array(img, dtype=np.float32) / 255.0  # Normalize to 0-1
-    print(img_array)
+    
     # Select the transformation matrix
     transformation_matrix = CVD_MATRICES[cvd_type]
 
