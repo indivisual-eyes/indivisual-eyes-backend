@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 
 # Load the image
-filename = 'backend/outside.jpg'
+filename = 'outside.jpg'
 image = cv2.imread(filename) #valorant_in_game000.png'
 
 # Reshape the image to a 2D array of pixels (num_pixels, 3)
@@ -115,7 +115,7 @@ palette = d_palette
 str(hc_palette)
 
 # Map each pixel's cluster to the corresponding color from the palette
-labels = kmeans.labels_  # Get the cluster labels for each pixel. 
+labels = kmeans.labels_  # Get the cluster labels for each pixel.
 # This takes the kmeans results and assigns an identifier with a cluster (our N value)
 new_pixels = palette[labels]  # Replace each pixel with its cluster's palette color
 

@@ -4,7 +4,7 @@ from sklearn.cluster import KMeans
 import plotly.graph_objects as go
 
 # Load the image
-image = cv2.imread('backend/butterfly.jpg')
+image = cv2.imread('butterfly.jpg')
 
 # Reshape the image to a 2D array of pixels (num_pixels, 3)
 pixels = image.reshape((-1, 3))

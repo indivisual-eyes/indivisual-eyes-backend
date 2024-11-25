@@ -3,3 +3,9 @@ numpy
 pillow
 uvicorn
 python-multipart
+opencv-python
+scikit-learn
+plotly
+matplotlib
+scikit-spatial
+sympy

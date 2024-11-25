@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # np.set_printoptions(threshold='truncated')
 
 # Load the image in BGR format
-filepath = 'wip/outside.jpg'
+filepath = 'outside.jpg'
 new_file_path = scale.simulate_cvd(filepath, 'protanopia', 50)
 src = cv2.imread(new_file_path)
 

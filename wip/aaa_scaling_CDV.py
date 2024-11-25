@@ -23,7 +23,7 @@ CVD_MATRICES = {
 def simulate_cvd(image_path, cvd_type, severity):
     """
     Simulates color vision deficiency on an image.
-    
+
     :param image_path: Path to the image to be transformed
     :param cvd_type: Type of CVD to simulate ("protanopia", "deuteranopia", "tritanopia")
     :param severity: Severity of the CVD (0 to 100, as percentage)
@@ -31,14 +31,14 @@ def simulate_cvd(image_path, cvd_type, severity):
     """
     if cvd_type not in CVD_MATRICES:
         raise ValueError(f"Invalid CVD type. Choose from {list(CVD_MATRICES.keys())}.")
-    
+
     if not (0 <= severity <= 100):
         raise ValueError("Severity must be between 0 and 100.")
-    
+
     # Load the image
     img = Image.open(image_path).convert("RGB")
     img_array = np.array(img, dtype=np.float32) / 255.0  # Normalize to 0-1
-    
+
     # Select the transformation matrix
     transformation_matrix = CVD_MATRICES[cvd_type]
 
@@ -57,7 +57,7 @@ def simulate_cvd(image_path, cvd_type, severity):
 
 # Example usage
 # if __name__ == "__main__":
-#     image_path = "backend/outside.jpg"  # Replace with your image path
+#     image_path = "outside.jpg"  # Replace with your image path
 #     cvd_type = "tritanopia"  # Choose from "protanopia", "deuteranopia", "tritanopia"
 #     severity = 100  # Percentage (0-100)
 
