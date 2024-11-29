@@ -1,6 +1,6 @@
 # IndiVisual Eyes Backend
 
-Backend REST API for the Indivisual Eyes app.
+Backend REST API for the IndiVisual Eyes app.
 
 Written in Python using FastAPI.
 
