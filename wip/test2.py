@@ -1,52 +1,50 @@
+import cv2
 import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from sympy import Plane, Point3D
 
-# Step 1: Define the 3D point and the plane
-p = Point3D(2, 2, 2)  # The point to be projected
-plane_point = Point3D(126, 126, 100)  # A point on the plane
-normal_vector = (0, 0, 1)  # Normal vector of the plane
+# Read the image
+src = cv2.imread('wip/machado.png')
 
-# Create the plane
-p1 = Plane(plane_point, normal_vector=normal_vector)
+# Convert from BGR to CIE Lab color space
+converted = cv2.cvtColor(src, cv2.COLOR_BGR2Lab)
 
-# Step 2: Calculate the projection of the point onto the plane
-projectionPoint = p1.projection(p)
+# Split the channels into L, a, b
+L, a, b = cv2.split(converted)
 
-# Print the projection point
-print(f"Projection Point: {projectionPoint}")
+# Debugging step: print ranges
+print("Original ranges:")
+print(f"L: min={L.min()}, max={L.max()}")
+print(f"a: min={a.min()}, max={a.max()}")
+print(f"b: min={b.min()}, max={b.max()}")
 
-# Step 3: Visualization
+# Correct scaling for the L channel (normalize to [0, 100] range)
+L = (L / 255.0 * 100.0).astype(np.float32)  # Normalize L to [0, 100]
 
-# Create the figure and the 3D axis
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+# Correct scaling for a and b channels:
+# Subtract 128 to shift to [-128, 127] for proper Lab representation
+a = a.astype(np.float32) - 128.0
+b = b.astype(np.float32) - 128.0
 
-# Plane (for visualization, let's define it using a grid)
-xx, yy = np.meshgrid(range(0, 300, 20), range(0, 300, 20))
-zz = (plane_point[0] - normal_vector[0] * xx - normal_vector[1] * yy) / normal_vector[2]
+# Debugging step: print ranges after processing
+print("Adjusted ranges:")
+print(f"L: min={L.min()}, max={L.max()}")
+print(f"a: min={a.min()}, max={a.max()}")
+print(f"b: min={b.min()}, max={b.max()}")
 
-# Plot the plane
-ax.plot_surface(xx, yy, zz, alpha=0.5, rstride=100, cstride=100, color='blue', edgecolors='b')
+# Perform your processing here (example: just retain the same values)
+# Ensure colors are restored properly afterward
 
-# Plot the original point (in red)
-ax.scatter(p[0], p[1], p[2], color='red', label='Original Point')
+# Map L back to [0, 255]
+L = (L / 100.0 * 255.0).clip(0, 255).astype(np.uint8)
 
-# Plot the projection point (in green)
-ax.scatter(projectionPoint[0], projectionPoint[1], projectionPoint[2], color='green', label='Projection Point')
+# Map a and b back to [0, 255]
+a = (a + 128).clip(0, 255).astype(np.uint8)
+b = (b + 128).clip(0, 255).astype(np.uint8)
 
-# Connect the point to the plane with a line
-ax.plot([p[0], projectionPoint[0]], [p[1], projectionPoint[1]], [p[2], projectionPoint[2]], color='black', linestyle='--')
+# Merge channels back together
+restored = cv2.merge([L, a, b])
 
-# Labels and title
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
-ax.set_zlabel('Z')
-ax.set_title('3D Point and its Projection onto Plane')
+# Convert back to BGR to visualize
+result = cv2.cvtColor(restored, cv2.COLOR_Lab2BGR)
 
-# Add legend
-ax.legend()
-
-# Show the plot
-plt.show()
+# Save or display the result
+cv2.imwrite("result.png", result)

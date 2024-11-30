@@ -2,9 +2,6 @@ from skspatial.objects import Plane, Vector
 from scipy.spatial.transform import Rotation as R
 import numpy as np
 
-p1 = Plane((1,0,1), (0,1,0))
-r1 = R.from_euler('z', 90, degrees=True)
-
 # print(type(r1))
 
 from skspatial.objects import Plane

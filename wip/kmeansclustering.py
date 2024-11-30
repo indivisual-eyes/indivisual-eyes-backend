@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 
 # Load the image
-filename = 'outside.jpg'
+filename = 'wip/meme.jpg'
 image = cv2.imread(filename) #valorant_in_game000.png'
 
 # Reshape the image to a 2D array of pixels (num_pixels, 3)
@@ -11,7 +11,7 @@ image = cv2.imread(filename) #valorant_in_game000.png'
 pixels = image.reshape((-1, 3))
 
 # Set the number of desired colors (clusters) for maximum contrast
-N = 15  # This can go up to 30 (The number of colors in our palette). The number of colors used in the end image
+N = 6 # This can go up to 30 (The number of colors in our palette). The number of colors used in the end image
 
 # Apply K-means clustering to the pixels #########################
 # This step allows us to find
@@ -110,8 +110,28 @@ p_palette = np.array([
     (210, 180, 140)   # Tan
 ], dtype = np.uint8
 )
+
+# Initialize an empty array
+mono_palette = np.empty((0, 3),dtype=np.uint8) # you cannot set this as datatype=np.uint8 for some god-forsaken reason. 
+# That's why we have pre and nomral
+
+# Initialize the starting value and the decrement factor
+cur = 255    
+n_factor = int(255 / N)
+
+# Loop to generate greyscale colors
+while cur >= 0 + n_factor:
+    mono_palette = np.vstack([mono_palette, (cur, cur, cur)])  # Append to the array
+    cur -= n_factor
+
+mono_palette[N-1] = (0, 0, 0)
+mono_palette = mono_palette.astype(np.uint8)
+
+
+
+
 # Change this line to filter <------------------------------------------------------------------------------------------------------
-palette = d_palette
+palette = mono_palette
 str(hc_palette)
 
 # Map each pixel's cluster to the corresponding color from the palette
@@ -130,12 +150,12 @@ reduced_color = new_colors.reshape(image.shape).astype(np.uint8)
 # Display the original and the high-contrast recolored image
 cv2.imshow('Original Image', image)
 cv2.imshow('Filtered Image', filtered_image)
-cv2.imshow('kmeans Image [N colors]', reduced_color)
+# cv2.imshow('kmeans Image [N colors]', reduced_color)
 
 
 
 # Save new images
-cv2.imwrite(str(filename)+'filtered'+'.jpg' , filtered_image)
+# cv2.imwrite(str(filename)+'filtered'+'.jpg' , filtered_image)
 
 
 # Wait for a key press and close the windows
