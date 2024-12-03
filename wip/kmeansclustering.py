@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 
 # Load the image
-filename = 'wip/meme.jpg'
+filename = 'wip/scatterplot.png'
 image = cv2.imread(filename) #valorant_in_game000.png'
 
 # Reshape the image to a 2D array of pixels (num_pixels, 3)
