@@ -1,10 +1,11 @@
 from typing import Annotated
-
 from fastapi import FastAPI, UploadFile, Response, HTTPException, Form, File
 import numpy as np
 from PIL import Image
 from io import BytesIO
 import uvicorn
+from sklearn.cluster import KMeans
+import cv2
 
 app = FastAPI()
 
@@ -54,13 +55,41 @@ def simulate_cvd(image_path, cvd_type, severity):
     return result_image
 
 
+def k_means_monochrome(image_path, N):
+    image = Image.open(image_path).convert("RGB")
+    image = np.array(image, dtype=np.float32) / 255.0
+
+    pixels = image.reshape((-1, 3))
+    kmeans = KMeans(n_clusters=N, random_state=13)
+    kmeans.fit(pixels)
+
+    palette = np.empty((0, 3), dtype=np.uint8)
+
+    cur = 255
+    n_factor = int(255 / N)
+
+    while cur >= 0 + n_factor:
+        palette = np.vstack([palette, (cur, cur, cur)])  # Append to the array
+        cur -= n_factor
+
+    palette[N-1] = (0, 0, 0)
+    palette = palette.astype(np.uint8)
+
+    labels = kmeans.labels_
+    new_pixels = palette[labels]
+
+    return Image.fromarray(new_pixels.reshape(image.shape))
+
+
 @app.post("/image")
 async def create_upload_file(image: Annotated[UploadFile, File()], cvd_type: Annotated[str, Form()]):
     image_path = image.file
-    severity = 100
 
     try:
-        img = simulate_cvd(image_path, cvd_type.lower(), severity)
+        if cvd_type == 'Achromatopsia':
+            img = k_means_monochrome(image_path, 6)
+        else:
+            img = simulate_cvd(image_path, cvd_type.lower(), 100)
 
         buffer = BytesIO()
         img.save(buffer, format="JPEG")
