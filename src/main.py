@@ -1,4 +1,6 @@
-from fastapi import FastAPI, UploadFile, Response, HTTPException
+from typing import Annotated
+
+from fastapi import FastAPI, UploadFile, Response, HTTPException, Form, File
 import numpy as np
 from PIL import Image
 from io import BytesIO
@@ -53,13 +55,12 @@ def simulate_cvd(image_path, cvd_type, severity):
 
 
 @app.post("/image")
-async def create_upload_file(image: UploadFile):
+async def create_upload_file(image: Annotated[UploadFile, File()], cvd_type: Annotated[str, Form()]):
     image_path = image.file
-    cvd_type = "protanopia"  # Choose from "normal", "protanopia", "deuteranopia", "tritanopia"
     severity = 100
 
     try:
-        img = simulate_cvd(image_path, cvd_type, severity)
+        img = simulate_cvd(image_path, cvd_type.lower(), severity)
 
         buffer = BytesIO()
         img.save(buffer, format="JPEG")
