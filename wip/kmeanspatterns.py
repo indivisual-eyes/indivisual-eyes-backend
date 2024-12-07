@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 
 # Load images
-image = cv2.imread('wip/scatterplot.png')
+image = cv2.imread('wip/spine.png')
 p1 = cv2.imread('wip/checkerboard.jpg')
 p2 = cv2.imread('wip/tesselated.png')
 p3 = cv2.imread('wip/dots.jpg')
@@ -12,7 +12,7 @@ p3 = cv2.imread('wip/dots.jpg')
 pixels = image.reshape((-1, 3))
 
 # Number of clusters
-N = 6
+N =4
 kmeans = KMeans(n_clusters=N, random_state=50)
 kmeans.fit(pixels)
 

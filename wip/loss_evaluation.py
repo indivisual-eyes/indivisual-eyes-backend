@@ -60,7 +60,7 @@ def evaluate(image: cv2.typing.MatLike, p_image: cv2.typing.MatLike) -> cv2.typi
     
     height, width = image.shape[:2]
     max_distance = (2 / np.pi) * (np.sqrt(2 * min(height, width)))  # Define sigma
-
+ 
     # Initialize the difference matrix
     difference_matrix = np.zeros((height, width))
 
@@ -106,6 +106,7 @@ def evaluate(image: cv2.typing.MatLike, p_image: cv2.typing.MatLike) -> cv2.typi
 
     # Find the eigenvector corresponding to the largest eigenvalue
     eigenvalues, eigenvectors = np.linalg.eig(covariance_matrix)
+    print(eigenvectors, "eigen")
     dominant_eigenvector = eigenvectors[:, np.argmax(np.abs(eigenvalues))]
 
     return dominant_eigenvector

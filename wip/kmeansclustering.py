@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 
 # Load the image
-filename = 'wip/scatterplot.png'
+filename = 'wip/facebook.png'
 image = cv2.imread(filename) #valorant_in_game000.png'
 
 # Reshape the image to a 2D array of pixels (num_pixels, 3)
@@ -11,7 +11,7 @@ image = cv2.imread(filename) #valorant_in_game000.png'
 pixels = image.reshape((-1, 3))
 
 # Set the number of desired colors (clusters) for maximum contrast
-N = 6 # This can go up to 30 (The number of colors in our palette). The number of colors used in the end image
+N = 15 # This can go up to 30 (The number of colors in our palette). The number of colors used in the end image
 
 # Apply K-means clustering to the pixels #########################
 # This step allows us to find
@@ -131,8 +131,8 @@ mono_palette = mono_palette.astype(np.uint8)
 
 
 # Change this line to filter <------------------------------------------------------------------------------------------------------
-palette = mono_palette
-str(hc_palette)
+palette = d_palette
+
 
 # Map each pixel's cluster to the corresponding color from the palette
 labels = kmeans.labels_  # Get the cluster labels for each pixel.
