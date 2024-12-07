@@ -5,7 +5,6 @@ from PIL import Image
 from io import BytesIO
 import uvicorn
 from sklearn.cluster import KMeans
-import cv2
 
 app = FastAPI()
 
@@ -55,24 +54,24 @@ def simulate_cvd(image_path, cvd_type, severity):
     return result_image
 
 
-def k_means_monochrome(image_path, N):
+def k_means_monochrome(image_path, n):
     image = Image.open(image_path).convert("RGB")
     image = np.array(image, dtype=np.float32) / 255.0
 
     pixels = image.reshape((-1, 3))
-    kmeans = KMeans(n_clusters=N, random_state=13)
+    kmeans = KMeans(n_clusters=n, random_state=13)
     kmeans.fit(pixels)
 
     palette = np.empty((0, 3), dtype=np.uint8)
 
     cur = 255
-    n_factor = int(255 / N)
+    n_factor = int(255 / n)
 
     while cur >= 0 + n_factor:
         palette = np.vstack([palette, (cur, cur, cur)])  # Append to the array
         cur -= n_factor
 
-    palette[N-1] = (0, 0, 0)
+    palette[n - 1] = (0, 0, 0)
     palette = palette.astype(np.uint8)
 
     labels = kmeans.labels_
