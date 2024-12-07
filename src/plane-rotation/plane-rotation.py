@@ -20,7 +20,7 @@ dichromat_image = original_image - np.dot(original_image[:, :, np.newaxis], dich
 
 # Compute maximum contrast loss angle
 max_loss_normal = loss_evaluation.evaluate(original_image, dichromat_image)
-max_loss_normal = np.array([0, max_loss_normal[1], max_loss_normal[0]])
+max_loss_normal = (0, max_loss_normal[1], max_loss_normal[0])
 
 # Project image to maximum contrast loss plane
 recolored_image = original_image - np.dot(original_image[:, :, np.newaxis], max_loss_normal) * max_loss_normal
