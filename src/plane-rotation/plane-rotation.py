@@ -1,8 +1,7 @@
 import numpy as np
 from skimage import io, color
-from scipy.spatial.transform import Rotation as R
-import matplotlib.pyplot as plt
 import loss_evaluation
+import matplotlib.pyplot as plt
 
 dichromat_angles = {
     'protanopia': 11.48,
@@ -26,17 +25,13 @@ max_loss_normal = np.array([0, max_loss_normal[1], max_loss_normal[0]])
 # Project image to maximum contrast loss plane
 recolored_image = original_image - np.dot(original_image[:, :, np.newaxis], max_loss_normal) * max_loss_normal
 
-# Flatten image array for rotation
-shape = recolored_image.shape
-recolored_image = recolored_image.reshape(shape[0] * shape[1], shape[2])
-
 # Rotate to align with dichromat plane
-degrees = np.degrees(np.arccos(np.dot(dichromat_normal, max_loss_normal)))
-recolored_image = R.from_euler('x', -degrees + 180, degrees=True).apply(recolored_image).reshape(shape)
+angle = np.arccos(np.dot(dichromat_normal, max_loss_normal)) + np.pi
+transform_matrix = ((1, 0, 0), (0, np.cos(angle), -np.sin(angle)), (0, np.sin(angle), np.cos(angle)))
+recolored_image = np.dot(recolored_image, transform_matrix)
 
 # Display images
 fig, axes = plt.subplots(1, 3)
-
 plt.setp(axes, xticks=[], yticks=[])
 
 axes[0].imshow(color.lab2rgb(original_image))
