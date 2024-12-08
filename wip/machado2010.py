@@ -38,8 +38,8 @@ lab_image = cv2.merge([L,a,b])
 
 # Creating plane to represent dicromat
 # xyz
-plane = Plane(point=(1,0,1),normal=(0,1,0))
-rotation = R.from_euler('x', -11.48, degrees=True) #-11.48
+plane = Plane(point=(0,0,0),normal=(0,1,0))
+rotation = R.from_euler('x', 11.48, degrees=True) #-11.48
 
 point = (rotation.apply(plane.point))
 normal = (rotation.apply(plane.normal))

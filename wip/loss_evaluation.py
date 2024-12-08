@@ -106,7 +106,6 @@ def evaluate(image: cv2.typing.MatLike, p_image: cv2.typing.MatLike) -> cv2.typi
 
     # Find the eigenvector corresponding to the largest eigenvalue
     eigenvalues, eigenvectors = np.linalg.eig(covariance_matrix)
-    print(eigenvectors, "eigen")
     dominant_eigenvector = eigenvectors[:, np.argmax(np.abs(eigenvalues))]
 
     return dominant_eigenvector
