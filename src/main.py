@@ -3,7 +3,7 @@ from fastapi import FastAPI, UploadFile, Response, HTTPException, Form, File
 from io import BytesIO
 import uvicorn
 
-from src.algorithms.simulate_cvd.simulate_cvd import simulate_cvd
+from src.algorithms.plane_rotation.plane_rotation import plane_rotation
 from src.algorithms.k_means_monochrome.k_means_monochrome import k_means_monochrome
 
 app = FastAPI()
@@ -17,7 +17,7 @@ async def create_upload_file(image: Annotated[UploadFile, File()], cvd_type: Ann
         if cvd_type == 'Achromatopsia':
             img = k_means_monochrome(image_path, 6)
         else:
-            img = simulate_cvd(image_path, cvd_type.lower(), 100)
+            img = plane_rotation(image_path, cvd_type.lower())
 
         buffer = BytesIO()
         img.save(buffer, format='JPEG')
