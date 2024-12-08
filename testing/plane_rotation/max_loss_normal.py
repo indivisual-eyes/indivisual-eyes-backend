@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def get_max_loss_normal(original_image, dichromat_image):
     height, width = original_image.shape[:2]
     variance = 2 / np.pi * np.sqrt(2 * min(width, height))
