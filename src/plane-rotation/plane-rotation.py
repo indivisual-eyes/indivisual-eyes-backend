@@ -9,8 +9,8 @@ dichromat_angles = {
     'tritanopia': -46.37,
 }
 
-dichromat_angle = np.radians(dichromat_angles['protanopia'])
-image_path = 'images/boat_screenshot.png'
+dichromat_angle = np.radians(dichromat_angles['deuteranopia'])
+image_path = 'src/plane-rotation/images/flame.png'
 
 original_image = color.rgb2lab(io.imread(image_path)[:, :, :3])
 
