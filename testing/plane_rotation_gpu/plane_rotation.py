@@ -82,10 +82,6 @@ angle = torch.arccos(torch.dot(dichromat_normal, max_loss_normal)) + torch.pi
 transform_matrix = tensor([[1, 0, 0], [0, torch.cos(angle), -torch.sin(angle)], [0, torch.sin(angle), torch.cos(angle)]])
 recolored_image = recolored_image @ transform_matrix
 
-original_image = color.lab2rgb(original_image.cpu())
-dichromat_image = color.lab2rgb(dichromat_image.cpu())
-recolored_image = color.lab2rgb(recolored_image.cpu())
-
 # Display images
 fig, axes = plt.subplots(1, 3)
 plt.setp(axes, xticks=[], yticks=[])
