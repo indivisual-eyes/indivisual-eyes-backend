@@ -1,40 +1,9 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-
-# Define the normal vector
-type = np.pi / 4  # Example angle (45 degrees)
-normal = np.array([0, np.cos(type), np.sin(type)])
-
-# Find an orthogonal vector
-# Assume z = 1 for simplicity
-z = 1
-y = -z * np.tan(type)  # Compute y using the relationship from dot product
-x = 1  # Choose any value for x since normal's x-component is 0
-orthogonal_vector = np.array([x, y, z])
-
-# Validate orthogonality
-dot_product = np.dot(normal, orthogonal_vector)
-print(f"Dot product (should be close to 0): {dot_product}")
-
-# Visualization
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-
-# Plot the normal vector
-ax.quiver(0, 0, 0, normal[0], normal[1], normal[2], color='r', label='Normal Vector', length=1)
-
-# Plot the orthogonal vector
-ax.quiver(0, 0, 0, orthogonal_vector[0], orthogonal_vector[1], orthogonal_vector[2],
-          color='b', label='Orthogonal Vector', length=1)
-
-# Set axis labels
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
-ax.set_zlabel('Z')
-
-# Add legend
-ax.legend()
-
-# Display the plot
-plt.show()
+c3 = color3 #np.array([l+.0, a+.0, b+.0])
+    #convert to rgb
+    c3 = color.lab2rgb(c3)
+    # reformat
+    c3 = np.clip((c3 * 255).astype(int), min = 0, max =255)
+    # convert to hex
+    c2_hex_color = f'#{c1[0]:02x}{c1[1]:02x}{c1[2]:02x}'
+    # Change the color of the displayed color
+    color_2.config(bg= c1_hex_color)
