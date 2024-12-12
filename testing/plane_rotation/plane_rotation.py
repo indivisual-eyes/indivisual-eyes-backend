@@ -9,25 +9,25 @@ dichromat_angles = {
     'tritanopia': -46.37,
 }
 
-dichromat_angle = np.radians(dichromat_angles['deuteranopia'])
-image_path = 'src/plane-rotation/images/flame.png'
+dichromat_angle = np.radians(dichromat_angles['protanopia'])
+image_path = 'images/boat_screenshot.png'
 
 original_image = color.rgb2lab(io.imread(image_path)[:, :, :3])
 
 # Project image to dichromat plane
 dichromat_normal = (0, np.cos(dichromat_angle), np.sin(dichromat_angle))
-dichromat_image = original_image - np.dot(original_image[:, :, np.newaxis], dichromat_normal) * dichromat_normal
+dichromat_image = original_image - original_image[:, :, np.newaxis] @ dichromat_normal * dichromat_normal
 
 # Compute maximum contrast loss angle
 max_loss_normal = get_max_loss_normal(original_image, dichromat_image)
 
 # Project image to maximum contrast loss plane
-recolored_image = original_image - np.dot(original_image[:, :, np.newaxis], max_loss_normal) * max_loss_normal
+recolored_image = original_image - original_image[:, :, np.newaxis] @ max_loss_normal * max_loss_normal
 
 # Rotate to align with dichromat plane
 angle = np.arccos(np.dot(dichromat_normal, max_loss_normal)) + np.pi
 transform_matrix = ((1, 0, 0), (0, np.cos(angle), -np.sin(angle)), (0, np.sin(angle), np.cos(angle)))
-recolored_image = np.dot(recolored_image, transform_matrix)
+recolored_image = recolored_image @ transform_matrix
 
 # Display images
 fig, axes = plt.subplots(1, 3)
