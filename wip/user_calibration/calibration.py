@@ -99,7 +99,8 @@ right_button.grid(row= 3, column = 2)
 l_val = 50
 a_val = 0
 b_val = 0
-scale_val = 72
+scale_val = 99
 
 generate(l_val, a_val, b_val, scale= scale_val, type = cvd.P)
 app.mainloop()
+# test
