@@ -11,16 +11,17 @@ class cvd(Enum):
 
 
 def generate(l: int, a: int, b: int, scale, type: cvd):
-  
+      
     normal = np.array([0, np.cos(type.value), np.sin(type.value)])
     range = [scale, scale*2, 1]
     random.shuffle(range)
     print(range)
     
     
-    color1 = np.array([l+ .0, a + .0, b+ .0] + range[2] * normal)
-    color2 = np.array([l +.0,a +.0, b+.0]) + (range[0]) * normal
-    color3 = np.array([l+.0, a +.0, b + .0]) + range[1] * normal
+    color1 = np.array([l + 0.0, a + 0.0, b + 0.0]) + range[2] * normal
+    color2 = np.array([l + 0.0, a + 0.0, b + 0.0]) + range[0] * normal
+    color3 = np.array([l + 0.0, a + 0.0, b + 0.0]) + range[1] * normal
+
     print('color1', color1)
     print('color2', color2)
     print('color3', color3)
@@ -57,7 +58,20 @@ def generate(l: int, a: int, b: int, scale, type: cvd):
     color_3.config(bg= c3_hex_color)
     return 
 
+def left_button_click():
+    global scale_val 
+    scale_val += 10
+    generate(l_val, a_val, b_val, scale= scale_val, type = cvd.P)
 
+def right_button_click():
+    global scale_val 
+    scale_val -= 10
+    generate(l_val, a_val, b_val, scale= scale_val, type = cvd.P)
+    
+def middle_button_click():
+    global l_val
+    l_val += 10
+    generate(l_val, a_val, b_val, scale= scale_val, type = cvd.P)
 
 
 
@@ -65,6 +79,14 @@ def generate(l: int, a: int, b: int, scale, type: cvd):
 # Create the main application window
 app = tk.Tk()
 app.title("Calibartion Tool")
+
+
+#Values passed into generate function
+l_val = 50
+a_val = 0
+b_val = 0
+scale_val = 40
+
 
 
 # Create a label to display the resulting color
@@ -85,22 +107,28 @@ visible_colors = tk.Label(text= "Visible Colors?")
 visible_colors.grid(row=2, column=1)
 
 #Selection of Colors Visible
-left_button = tk.Button(app, text = "1 color")
+left_button = tk.Button(app, text="1 color", command = lambda: left_button_click())
 left_button.grid(row = 3, column= 0)
 
-middle_button = tk.Button(app, text = '2 colors')
+
+middle_button = tk.Button(app, text = '2 colors', command = lambda: middle_button_click())
 middle_button.grid(row= 3, column = 1)
 
-right_button = tk.Button(app, text = '3 colors')
+right_button = tk.Button(app, text = '3 colors', command = lambda: right_button_click())
 right_button.grid(row= 3, column = 2)
 # Start the application
 
-#Values passed into function
-l_val = 50
-a_val = 0
-b_val = 0
-scale_val = 22
-
 generate(l_val, a_val, b_val, scale= scale_val, type = cvd.P)
 app.mainloop()
-# test3242
+
+# The main idea of this application is to find the outer bounds of a users color space.
+# The user will be able to select the number of colors they can see.
+# If the user can see 3 colors, the color space is too large.
+# If the user can see 1 color, the color space is too small.
+# If the user can see 2 colors, the color space is just right.
+
+# The plan after this is to project all colors in a given image into the users color space.
+# This will allow the user to see the colors as they would see them.
+
+# If we can create a color palette where selecting colors that are maximally different from each other (on the edge of the color space),
+# we can use k-means clustering and assign each cluster a color from the palette (customized to the user's color space).
