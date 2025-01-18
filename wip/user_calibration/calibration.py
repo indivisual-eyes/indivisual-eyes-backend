@@ -103,4 +103,4 @@ scale_val = 22
 
 generate(l_val, a_val, b_val, scale= scale_val, type = cvd.P)
 app.mainloop()
-# test
+# test3242
