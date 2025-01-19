@@ -132,3 +132,6 @@ app.mainloop()
 
 # If we can create a color palette where selecting colors that are maximally different from each other (on the edge of the color space),
 # we can use k-means clustering and assign each cluster a color from the palette (customized to the user's color space).
+
+# Should the colors scale from perpendicularly from the 2d plane? 
+# Currently, the colors scale from the 2d plane. (across the slightly tilted a/b plane)
