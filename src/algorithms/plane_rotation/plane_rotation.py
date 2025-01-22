@@ -12,7 +12,6 @@ def plane_rotation(image_path, cvd_type):
     }
 
     dichromat_angle = np.radians(dichromat_angles[cvd_type])
-
     original_image = color.rgb2lab(io.imread(image_path)[:, :, :3])
 
     dichromat_normal = (0, np.cos(dichromat_angle), np.sin(dichromat_angle))
@@ -27,3 +26,4 @@ def plane_rotation(image_path, cvd_type):
     recolored_image = recolored_image @ transform_matrix
 
     return Image.fromarray((color.lab2rgb(recolored_image) * 255).astype(np.uint8))
+

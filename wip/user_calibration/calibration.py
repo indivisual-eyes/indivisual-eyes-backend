@@ -5,22 +5,26 @@ import tkinter as tk
 from enum import Enum
 
 class cvd(Enum):
-    P = -11.48
-    D = -8.11
-    T = 46.37
+    P = 11.48
+    D = 8.11
+    T = -46.37
 
 
 def generate(l: int, a: int, b: int, scale, type: cvd):
-      
-    normal = np.array([0, np.cos(type.value), np.sin(type.value)])
-    range = [scale, scale*2, 1]
+    
+    dichromat_angle = np.radians(type.value)  
+    normal = np.array([0, np.cos(dichromat_angle), np.sin(dichromat_angle)])
+    perpendicular_normal = np.cross(normal, np.array([1,0,0]))
+    print('normal',normal)
+    print('perpendicular_normal', perpendicular_normal)
+    range = [scale, scale*2, 0]
     random.shuffle(range)
     print(range)
     
     
-    color1 = np.array([l + 0.0, a + 0.0, b + 0.0]) + range[2] * normal
-    color2 = np.array([l + 0.0, a + 0.0, b + 0.0]) + range[0] * normal
-    color3 = np.array([l + 0.0, a + 0.0, b + 0.0]) + range[1] * normal
+    color1 = np.array([l + 0.0, a + 0.0, b + 0.0]) + range[2] * perpendicular_normal    
+    color2 = np.array([l + 0.0, a + 0.0, b + 0.0]) + range[0] * perpendicular_normal
+    color3 = np.array([l + 0.0, a + 0.0, b + 0.0]) + range[1] * perpendicular_normal
 
     print('color1', color1)
     print('color2', color2)
@@ -83,8 +87,8 @@ app.title("Calibartion Tool")
 
 #Values passed into generate function
 l_val = 50
-a_val = 0
-b_val = 0
+a_val = 50
+b_val = 50
 scale_val = 40
 
 
