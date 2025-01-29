@@ -47,13 +47,15 @@ red_red = red[red_index]
 
 # ==============================================================================
 
-fig, axs = plt.subplots(3, figsize=(5, 10))
+fig, axs = plt.subplots(4, figsize=(5, 10))
 
 axs[0].plot(x, blue, color='blue')
 axs[0].plot(x, green, color='green')
 axs[0].plot(x, red, color='red')
 
-img = Image.open('outside.jpg')
+green_cone_slider = Slider(ax=axs[1], label='Green cone', valmin=blue_cone_wavelength, valmax=red_cone_wavelength, valinit=green_cone_wavelength)
+
+img = Image.open('boat_custom.png')
 img.load()
 img = np.asarray(img, dtype=np.int16)
 img2 = img.copy()
@@ -70,8 +72,31 @@ for row in range(img2.shape[0]):
                                     img[row][col][1] * red_green,
                                     img[row][col][0] * red_red])
 
-axs[1].imshow(img)
-axs[2].imshow(img2)
+
+def update(_):
+    green_cone_wavelength = green_cone_slider.val
+    green = curve(x, green_cone_wavelength, 27.5)
+    axs[0].cla()
+    axs[0].plot(x, blue, color='blue')
+    axs[0].plot(x, green, color='green')
+    axs[0].plot(x, red, color='red')
+    green_blue = green[blue_index]
+    green_green = green[green_index]
+    green_red = green[red_index]
+
+    for row in range(img2.shape[0]):
+        for col in range(img2.shape[1]):
+            img2[row][col][1] = np.max([img[row][col][2] * green_blue,
+                                        img[row][col][1] * green_green,
+                                        img[row][col][0] * green_red])
+
+    axs[2].imshow(img)
+    axs[3].imshow(img2)
+    fig.canvas.draw_idle()
+
+
+green_cone_slider.on_changed(update)
+update(green_cone_wavelength)
 
 # ==============================================================================
 
