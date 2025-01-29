@@ -10,11 +10,11 @@ max_wavelength = 700
 steps = 1000
 
 blue_cone_wavelength = 450
-green_cone_wavelength = 540
+green_cone_wavelength = 529
 red_cone_wavelength = 575
 
 blue_emitter_wavelength = 450
-green_emitter_wavelength = 540
+green_emitter_wavelength = 529
 red_emitter_wavelength = 575
 
 index = lambda x: round((x - min_wavelength) / (max_wavelength - min_wavelength) * steps)
@@ -53,24 +53,18 @@ axs[0].plot(x, blue, color='blue')
 axs[0].plot(x, green, color='green')
 axs[0].plot(x, red, color='red')
 
-green_cone_slider = Slider(ax=axs[1], label='Green cone', valmin=blue_cone_wavelength, valmax=red_cone_wavelength, valinit=green_cone_wavelength)
+green_cone_slider = Slider(ax=axs[1], label='Green cone', valmin=blue_cone_wavelength, valmax=700, valinit=green_cone_wavelength)
 
-img = Image.open('boat_custom.png')
+img = Image.open('gradient.jpg')
 img.load()
 img = np.asarray(img, dtype=np.int16)
 img2 = img.copy()
 
 for row in range(img2.shape[0]):
     for col in range(img2.shape[1]):
-        img2[row][col][2] = np.max([img[row][col][2] * blue_blue,
-                                    img[row][col][1] * blue_green,
-                                    img[row][col][0] * blue_red])
-        img2[row][col][1] = np.max([img[row][col][2] * green_blue,
-                                    img[row][col][1] * green_green,
-                                    img[row][col][0] * green_red])
-        img2[row][col][0] = np.max([img[row][col][2] * red_blue,
-                                    img[row][col][1] * red_green,
-                                    img[row][col][0] * red_red])
+        img2[row][col][2] = np.max([img[row][col][2] * blue_blue, img[row][col][1] * blue_green, img[row][col][0] * blue_red])
+        img2[row][col][1] = np.max([img[row][col][2] * green_blue, img[row][col][1] * green_green, img[row][col][0] * green_red])
+        img2[row][col][0] = np.max([img[row][col][2] * red_blue, img[row][col][1] * red_green, img[row][col][0] * red_red])
 
 
 def update(_):
@@ -86,9 +80,7 @@ def update(_):
 
     for row in range(img2.shape[0]):
         for col in range(img2.shape[1]):
-            img2[row][col][1] = np.max([img[row][col][2] * green_blue,
-                                        img[row][col][1] * green_green,
-                                        img[row][col][0] * green_red])
+            img2[row][col][1] = np.max([img[row][col][2] * green_blue, img[row][col][1] * green_green, img[row][col][0] * green_red])
 
     axs[2].imshow(img)
     axs[3].imshow(img2)
