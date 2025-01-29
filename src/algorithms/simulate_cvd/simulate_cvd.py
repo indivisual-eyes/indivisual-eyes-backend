@@ -26,14 +26,17 @@ CVD_MATRICES = {
 }
 
 
-def simulate_cvd(image_path, cvd_type, severity):
+def simulate_cvd(image_path, cvd_type, severity, path=True):
     if cvd_type not in CVD_MATRICES:
         raise ValueError(f'Invalid CVD type. Choose from {list(CVD_MATRICES.keys())}.')
 
     if not (0 <= severity <= 100):
         raise ValueError('Severity must be between 0 and 100.')
 
-    img = Image.open(image_path).convert('RGB')
+    if path:
+        img = Image.open(image_path).convert('RGB')
+    else:
+        img = image_path
     img_array = np.array(img, dtype=np.float32) / 255.0
 
     transformation_matrix = CVD_MATRICES[cvd_type]
@@ -46,3 +49,28 @@ def simulate_cvd(image_path, cvd_type, severity):
     result_image = Image.fromarray(result_array.astype(np.uint8))
 
     return result_image
+
+
+from matplotlib import pyplot as plt
+
+path = 'img_3.png'
+
+image1 = simulate_cvd(path, 'protanopia', 0)
+# image1 = simulate_cvd(image1, 'protanopia', 50, False)
+
+image2 = simulate_cvd(path, 'protanopia', 75)
+# image2 = simulate_cvd(image2, 'protanopia', 50, False)
+# image2 = simulate_cvd(path, 'tritanopia', 100)
+
+image3 = simulate_cvd(path, 'protanopia', 100)
+# image3 = simulate_cvd(image3, 'protanopia', 50, False)
+# image3 = simulate_cvd(path, 'tritanopia', 100)
+
+fig, axes = plt.subplots(1, 3)
+plt.setp(axes, xticks=[], yticks=[])
+
+axes[0].imshow(image1)
+axes[1].imshow(image2)
+axes[2].imshow(image3)
+
+plt.show()
