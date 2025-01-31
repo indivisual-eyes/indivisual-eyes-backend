@@ -53,18 +53,18 @@ axs[0].plot(x, blue, color='blue')
 axs[0].plot(x, green, color='green')
 axs[0].plot(x, red, color='red')
 
-green_cone_slider = Slider(ax=axs[1], label='Green cone', valmin=blue_cone_wavelength, valmax=700, valinit=green_cone_wavelength)
+green_cone_slider = Slider(ax=axs[1], label='Green cone', valmin=min_wavelength, valmax=max_wavelength, valinit=green_cone_wavelength)
 
-img = Image.open('gradient.jpg')
+img = Image.open('rgb_spectrum_small.png')
 img.load()
 img = np.asarray(img, dtype=np.int16)
 img2 = img.copy()
 
 for row in range(img2.shape[0]):
     for col in range(img2.shape[1]):
-        img2[row][col][2] = np.max([img[row][col][2] * blue_blue, img[row][col][1] * blue_green, img[row][col][0] * blue_red])
-        img2[row][col][1] = np.max([img[row][col][2] * green_blue, img[row][col][1] * green_green, img[row][col][0] * green_red])
-        img2[row][col][0] = np.max([img[row][col][2] * red_blue, img[row][col][1] * red_green, img[row][col][0] * red_red])
+        img2[row][col][2] = np.clip(np.sum([img[row][col][2] * blue_blue, img[row][col][1] * blue_green, img[row][col][0] * blue_red]), 0, 255)
+        img2[row][col][1] = np.clip(np.sum([img[row][col][2] * green_blue, img[row][col][1] * green_green, img[row][col][0] * green_red]), 0, 255)
+        img2[row][col][0] = np.clip(np.sum([img[row][col][2] * red_blue, img[row][col][1] * red_green, img[row][col][0] * red_red]), 0, 255)
 
 
 def update(_):
@@ -80,7 +80,7 @@ def update(_):
 
     for row in range(img2.shape[0]):
         for col in range(img2.shape[1]):
-            img2[row][col][1] = np.max([img[row][col][2] * green_blue, img[row][col][1] * green_green, img[row][col][0] * green_red])
+            img2[row][col][1] = np.clip(np.sum([img[row][col][2] * green_blue, img[row][col][1] * green_green, img[row][col][0] * green_red]), 0, 255)
 
     axs[2].imshow(img)
     axs[3].imshow(img2)
