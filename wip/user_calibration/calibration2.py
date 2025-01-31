@@ -1,5 +1,5 @@
 import numpy as np
-import random
+
 from skimage import color
 import tkinter as tk
 from enum import Enum
@@ -9,23 +9,44 @@ class cvd(Enum):
     D = 8.11
     T = -46.37
 
+protanopia = np.array([
+        [0.567, 0.433, 0.000],
+        [0.558, 0.442, 0.000],
+        [0.000, 0.242, 0.758]
+    ])
+
+def apply_protanopia_lab(lab_color, severity=1):
+    """ Converts Lab to XYZ, applies Protanopia transformation with severity, then converts back to Lab. """
+    # Convert Lab to XYZ
+    xyz_color = color.lab2xyz(lab_color.reshape(1, 1, 3)).squeeze()
+    
+    # Apply Protanopia transformation in XYZ space
+    xyz_protanopia = protanopia @ xyz_color  # Matrix multiplication
+
+    # Interpolate based on severity
+    xyz_final = (1 - severity) * xyz_color + severity * xyz_protanopia
+
+    # Convert back XYZ → Lab
+    lab_protanopia = color.xyz2lab(xyz_final.reshape(1, 1, 3)).squeeze()
+    
+    return lab_protanopia
 
 def generate(l: int, a: int, b: int, scale, type: cvd):
     
     dichromat_angle = np.radians(type.value)  
     normal = np.array([0, np.cos(dichromat_angle), np.sin(dichromat_angle)])
     perpendicular_normal = np.cross(normal, np.array([1,0,0]))
-    print('normal',normal)
-    print('perpendicular_normal', perpendicular_normal)
-    range = [scale, scale*2, 0]
-    random.shuffle(range)
-    print(range)
+    dist = perpendicular_normal * 40
     
     
-    color1 = np.array([l + 0.0, a + 0.0, b + 0.0]) + range[2] * perpendicular_normal    
-    color2 = np.array([l + 0.0, a + 0.0, b + 0.0]) + range[0] * perpendicular_normal
-    color3 = np.array([l + 0.0, a + 0.0, b + 0.0]) + range[1] * perpendicular_normal
+    color1 = np.array([l + 0.0, a + 0.0, b + 0.0]) 
+    color2 = np.array([l + 0.0, a + 0.0, b + 0.0]) + scale * (perpendicular_normal)
+    color3 = np.array([l + 0.0, a + 0.0, b + 0.0]) + scale * (perpendicular_normal) + dist
 
+    color1 = apply_protanopia_lab(color1)
+    color2 = apply_protanopia_lab(color2)   
+    color3 = apply_protanopia_lab(color3)
+        
     print('color1', color1)
     print('color2', color2)
     print('color3', color3)
@@ -87,9 +108,9 @@ app.title("Calibartion Tool")
 
 #Values passed into generate function
 l_val = 50
-a_val = 0
-b_val = 0
-scale_val = 40
+a_val = 100
+b_val = 100
+scale_val = 100
 
 
 
