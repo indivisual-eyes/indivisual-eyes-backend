@@ -17,18 +17,22 @@ blue_emitter_wavelength = 450
 green_emitter_wavelength = 529
 red_emitter_wavelength = 575
 
+# index is a lambda function that takes in a value x and returns the index of that value in the range of min_wavelength to max_wavelength
 index = lambda x: round((x - min_wavelength) / (max_wavelength - min_wavelength) * steps)
 blue_index = index(blue_emitter_wavelength)
 green_index = index(green_emitter_wavelength)
 red_index = index(red_emitter_wavelength)
+# These print out to be 167, 430, and 583 Not sure why as of now.
 
 
 def curve(x, center, width):
     return stats.norm.pdf(x, center, width) * width * math.sqrt(2 * np.pi)
 
-
+# Linspace returns evenly spaced numbers over a specified interval. 
+# In this case, the interval is from min_wavelength to max_wavelength with steps number of steps. (400, 700)
 x = np.linspace(min_wavelength, max_wavelength, steps)
 
+#applying curve to the different wavelengths
 blue = curve(x, blue_cone_wavelength, 15)
 green = curve(x, green_cone_wavelength, 27.5)
 red = curve(x, red_cone_wavelength, 32.5)
@@ -49,9 +53,9 @@ red_red = red[red_index]
 
 fig, axs = plt.subplots(4, figsize=(5, 10))
 
-axs[0].plot(x, blue, color='blue')
-axs[0].plot(x, green, color='green')
-axs[0].plot(x, red, color='red')
+# axs[0].plot(x, blue, color='blue')
+# axs[0].plot(x, green, color='green')
+# axs[0].plot(x, red, color='red')
 
 green_cone_slider = Slider(ax=axs[1], label='Green cone', valmin=min_wavelength, valmax=max_wavelength, valinit=green_cone_wavelength)
 
@@ -65,6 +69,7 @@ for row in range(img2.shape[0]):
         img2[row][col][2] = np.clip(np.sum([img[row][col][2] * blue_blue, img[row][col][1] * blue_green, img[row][col][0] * blue_red]), 0, 255)
         img2[row][col][1] = np.clip(np.sum([img[row][col][2] * green_blue, img[row][col][1] * green_green, img[row][col][0] * green_red]), 0, 255)
         img2[row][col][0] = np.clip(np.sum([img[row][col][2] * red_blue, img[row][col][1] * red_green, img[row][col][0] * red_red]), 0, 255)
+        # blue is row col 2, green is row col 1, red is row col 0
 
 
 def update(_):
@@ -77,7 +82,7 @@ def update(_):
     green_blue = green[blue_index]
     green_green = green[green_index]
     green_red = green[red_index]
-
+    print(green_blue, green_green, green_red)   
     for row in range(img2.shape[0]):
         for col in range(img2.shape[1]):
             img2[row][col][1] = np.clip(np.sum([img[row][col][2] * green_blue, img[row][col][1] * green_green, img[row][col][0] * green_red]), 0, 255)

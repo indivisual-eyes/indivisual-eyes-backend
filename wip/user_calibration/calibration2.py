@@ -15,7 +15,7 @@ protanopia = np.array([
         [0.000, 0.242, 0.758]
     ])
 
-def apply_protanopia_lab(lab_color, severity=1):
+def apply_protanopia_lab(lab_color, severity=0.5):
     """ Converts Lab to XYZ, applies Protanopia transformation with severity, then converts back to Lab. """
     # Convert Lab to XYZ
     xyz_color = color.lab2xyz(lab_color.reshape(1, 1, 3)).squeeze()
@@ -108,8 +108,8 @@ app.title("Calibartion Tool")
 
 #Values passed into generate function
 l_val = 50
-a_val = 100
-b_val = 100
+a_val = 0
+b_val = 0
 scale_val = 100
 
 
