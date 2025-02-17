@@ -53,7 +53,7 @@ def simulate_cvd(image_path, cvd_type, severity, path=True):
 
 from matplotlib import pyplot as plt
 
-path = 'img_3.png'
+path = 'rgb_spectrum.png'
 
 image1 = simulate_cvd(path, 'protanopia', 0)
 # image1 = simulate_cvd(image1, 'protanopia', 50, False)
@@ -66,7 +66,7 @@ image3 = simulate_cvd(path, 'protanopia', 100)
 # image3 = simulate_cvd(image3, 'protanopia', 50, False)
 # image3 = simulate_cvd(path, 'tritanopia', 100)
 
-fig, axes = plt.subplots(1, 3)
+fig, axes = plt.subplots(3, 1)
 plt.setp(axes, xticks=[], yticks=[])
 
 axes[0].imshow(image1)

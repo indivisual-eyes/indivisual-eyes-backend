@@ -1,10 +1,13 @@
+import os
 from typing import Annotated
 from fastapi import FastAPI, UploadFile, Response, HTTPException, Form, File
 from io import BytesIO
 import uvicorn
 from src.algorithms.plane_rotation.plane_rotation import plane_rotation
 from src.algorithms.k_means_monochrome.k_means_monochrome import k_means_monochrome
+from dotenv import load_dotenv
 
+load_dotenv()
 app = FastAPI()
 
 
@@ -30,4 +33,4 @@ async def create_upload_file(image: Annotated[UploadFile, File()], cvd_type: Ann
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+    uvicorn.run(app, host='0.0.0.0', port=int(os.getenv('PORT') or 8000))

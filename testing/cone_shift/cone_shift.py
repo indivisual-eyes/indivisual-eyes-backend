@@ -55,7 +55,7 @@ axs[0].plot(x, red, color='red')
 
 green_cone_slider = Slider(ax=axs[1], label='Green cone', valmin=min_wavelength, valmax=max_wavelength, valinit=green_cone_wavelength)
 
-img = Image.open('testing/cone_shift/rgb_spectrum_small.png')
+img = Image.open('rgb_spectrum.png')
 img.load()
 img = np.asarray(img, dtype=np.int16)
 img2 = img.copy()

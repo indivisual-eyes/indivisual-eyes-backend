@@ -12,3 +12,4 @@ sympy
 scipy~=1.14.1
 scikit-image~=0.24.0
 torch~=2.5.1
+python-dotenv~=1.0.1
