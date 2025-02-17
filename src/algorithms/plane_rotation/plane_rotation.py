@@ -26,4 +26,3 @@ def plane_rotation(image_path, cvd_type):
     recolored_image = recolored_image @ transform_matrix
 
     return Image.fromarray((color.lab2rgb(recolored_image) * 255).astype(np.uint8))
-
