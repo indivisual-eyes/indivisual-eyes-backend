@@ -4,7 +4,7 @@ from io import BytesIO
 import uvicorn
 from src.algorithms.plane_rotation.plane_rotation import plane_rotation
 from src.algorithms.k_means_monochrome.k_means_monochrome import k_means_monochrome
-test = "test"
+
 app = FastAPI()
 
 
