@@ -17,7 +17,7 @@ async def create_upload_file(image: Annotated[UploadFile, File()], cvd_type: Ann
 
     try:
         if cvd_type == 'Achromatopsia':
-            img = k_means_monochrome(image_path, 6)
+            img = k_means_monochrome(image_path, 15)
         else:
             img = plane_rotation(image_path, cvd_type.lower())
 
